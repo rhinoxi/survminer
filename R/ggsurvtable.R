@@ -285,7 +285,7 @@ ggsurvtable <- function (fit, data = NULL, survtable = c("cumevents",  "cumcenso
     .expand <- c(0,0)
     offset <- max(xlim)/30
     survsummary <- survsummary %>%
-      dplyr::mutate(time = ifelse(time == 0, offset, time))
+      dplyr::mutate(time = ifelse(time == 0, 0, time))
   }
 
   p <- ggplot(survsummary, mapping) +
@@ -293,7 +293,7 @@ ggsurvtable <- function (fit, data = NULL, survtable = c("cumevents",  "cumcenso
     ggpubr::geom_exec(geom_text, data = survsummary, size = fontsize, color = color, family = font.family) +
     ggtheme +
     scale_y_discrete(breaks = as.character(levels(survsummary$strata)),labels = yticklabs ) +
-    coord_cartesian(xlim = xlim) +
+    coord_cartesian(xlim = xlim, clip = "off") +
     labs(title = title, x = xlab, y = ylab, color = legend.title, shape = legend.title)
 
   if (survtable == "risk.table")
